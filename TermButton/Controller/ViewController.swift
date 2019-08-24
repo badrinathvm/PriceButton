@@ -82,6 +82,7 @@ class ViewController: UIViewController {
                     stackedButtons.forEach({ (button) in
                         button.layer.sublayers?.first?.isHidden = true
                     })
+                    self.button.setImage(UIImage(named: "dots_unfilled"), for: UIControl.State.normal)
                     self.mainStackWidthConstraint.constant = self.widthConstant
                     self.pinBackground(self.backgroundView, to: self.mainStackView, constant: self.widthConstant )
                 }else {
@@ -89,6 +90,7 @@ class ViewController: UIViewController {
                     stackedButtons.forEach({ (button) in
                         button.layer.sublayers?.first?.isHidden = false
                     })
+                    self.button.setImage(UIImage(named: "dots_filled"), for: UIControl.State.normal)
                     self.mainStackWidthConstraint.constant = screenSize.size.width - 20
                     self.pinBackground(self.backgroundView, to: self.mainStackView, constant: screenSize.size.width - 20 )
                 }
@@ -109,9 +111,9 @@ class ViewController: UIViewController {
     
     public lazy var button: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "dots"), for: UIControl.State.normal)
+        button.setImage(UIImage(named: "dots_unfilled"), for: UIControl.State.normal)
         button.semanticContentAttribute = .forceRightToLeft
-        button.setTitle("Price ", for: UIControl.State.normal)
+        button.setTitle("Price  ", for: UIControl.State.normal)
         button.setTitleColor(UIColor.purple, for: UIControl.State.normal)
         button.addTarget(self, action: #selector(expandButton(_:)), for: UIControl.Event.touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -120,7 +122,7 @@ class ViewController: UIViewController {
 
     
     var mainStackWidthConstraint:NSLayoutConstraint!
-    var widthConstant:CGFloat = 100
+    var widthConstant:CGFloat = 120
     
     override func viewDidLoad() {
        super.viewDidLoad()
