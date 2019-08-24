@@ -12,7 +12,7 @@ class ViewController: UIViewController {
     
     private lazy var backgroundView: UIView = {
         let view = UIView()
-        view.layer.cornerRadius = 15.0
+        view.layer.cornerRadius = 8.0
         view.layer.borderWidth = 1.5
         view.layer.borderColor = UIColor.gray.cgColor
         return view
@@ -26,12 +26,6 @@ class ViewController: UIViewController {
         stackView.spacing = 2.0
         stackView.distribution = .fillProportionally
         return stackView
-    }()
-    
-    let dotImage:UIImageView = {
-        let dotImage = UIImageView(image: UIImage(named: "threeDots"))
-        dotImage.translatesAutoresizingMaskIntoConstraints = false
-        return dotImage
     }()
     
     let oneDollar:UIButton = {
@@ -70,7 +64,6 @@ class ViewController: UIViewController {
         return dollar
     }()
     
-
     var buttonsAreHidden = true {
         didSet {
             let animation = UIViewPropertyAnimator(duration: 0.3, curve: .easeOut) {
@@ -82,17 +75,21 @@ class ViewController: UIViewController {
                 })
                 
                 let screenSize = UIScreen.main.bounds
-                var stackedButtons = self.stackView.arrangedSubviews
+                let stackedButtons = self.stackView.arrangedSubviews
                 
                 if self.buttonsAreHidden {
+                    /// hide the border lines when animating
                     stackedButtons.forEach({ (button) in
                         button.layer.sublayers?.first?.isHidden = true
                     })
-                    self.pinBackground(self.backgroundView, to: self.mainStackView, constant: 80 )
+                    self.mainStackWidthConstraint.constant = self.widthConstant
+                    self.pinBackground(self.backgroundView, to: self.mainStackView, constant: self.widthConstant )
                 }else {
+                    /// show border lines when animating
                     stackedButtons.forEach({ (button) in
                         button.layer.sublayers?.first?.isHidden = false
                     })
+                    self.mainStackWidthConstraint.constant = screenSize.size.width - 20
                     self.pinBackground(self.backgroundView, to: self.mainStackView, constant: screenSize.size.width - 20 )
                 }
                 self.view.layoutIfNeeded()
@@ -110,16 +107,21 @@ class ViewController: UIViewController {
         return mainStack
     }()
     
-    let button:UIButton = {
-        let button = UIButton(type: UIButton.ButtonType.roundedRect)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("  Price", for: UIControl.State.normal)
-        button.contentHorizontalAlignment = .left
+    public lazy var button: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(named: "dots"), for: UIControl.State.normal)
+        button.semanticContentAttribute = .forceRightToLeft
+        button.setTitle("Price ", for: UIControl.State.normal)
         button.setTitleColor(UIColor.purple, for: UIControl.State.normal)
         button.addTarget(self, action: #selector(expandButton(_:)), for: UIControl.Event.touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-   
+
+    
+    var mainStackWidthConstraint:NSLayoutConstraint!
+    var widthConstant:CGFloat = 100
+    
     override func viewDidLoad() {
        super.viewDidLoad()
        self.view.backgroundColor = UIColor.white
@@ -130,10 +132,11 @@ class ViewController: UIViewController {
             self.mainStackView.addArrangedSubview(view)
         }
     
+        mainStackWidthConstraint = self.mainStackView.widthAnchor.constraint(equalToConstant: widthConstant)
         NSLayoutConstraint.activate([
             self.mainStackView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 100),
             self.mainStackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
-            self.mainStackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
+            mainStackWidthConstraint,
             self.mainStackView.heightAnchor.constraint(equalToConstant: 40),
             
             self.button.topAnchor.constraint(equalTo: self.mainStackView.topAnchor),
@@ -146,7 +149,7 @@ class ViewController: UIViewController {
         }
         
         stackView.isHidden = true
-        pinBackground(backgroundView, to: mainStackView, constant: 80)
+        pinBackground(backgroundView, to: mainStackView, constant: widthConstant)
     }
     
     @objc func expandButton(_ sender: UIButton) {
@@ -159,4 +162,3 @@ class ViewController: UIViewController {
         view.pin(to: stackView, constant: constant)
     }
 }
-

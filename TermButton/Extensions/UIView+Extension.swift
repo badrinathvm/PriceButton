@@ -13,7 +13,8 @@ extension UIView {
     func pin(to view: UIView , constant: CGFloat) {
         NSLayoutConstraint.activate([
             leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            widthAnchor.constraint(equalToConstant: constant),
+            trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5),
+            //widthAnchor.constraint(equalToConstant: constant),
             topAnchor.constraint(equalTo: view.topAnchor),
             bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
