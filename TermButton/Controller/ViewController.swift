@@ -38,7 +38,7 @@ class ViewController: UIViewController {
         let dollar = UIButton(type: .system)
         dollar.translatesAutoresizingMaskIntoConstraints = false
         dollar.setTitle("$", for: UIControl.State.normal)
-        dollar.addBorder(side: .left, color: UIColor.lightGray, width: 1)
+        dollar.addLeftBorder()
         dollar.setTitleColor(UIColor.purple, for: UIControl.State.normal)
         return dollar
     }()
@@ -47,9 +47,8 @@ class ViewController: UIViewController {
         let dollar = UIButton(type: .system)
         dollar.translatesAutoresizingMaskIntoConstraints = false
         dollar.setTitle("$$", for: UIControl.State.normal)
+        dollar.addLeftBorder()
         dollar.setTitleColor(UIColor.purple, for: UIControl.State.normal)
-        dollar.addBorder(side: .left, color: UIColor.lightGray, width: 1)
-        dollar.addBorder(side: .right, color: UIColor.lightGray, width: 1)
         return dollar
     }()
     
@@ -57,7 +56,7 @@ class ViewController: UIViewController {
         let dollar = UIButton(type: .system)
         dollar.translatesAutoresizingMaskIntoConstraints = false
         dollar.setTitle("$$$", for: UIControl.State.normal)
-        dollar.addBorder(side: .right, color: UIColor.lightGray, width: 1)
+        dollar.addLeftBorder()
         dollar.setTitleColor(UIColor.purple, for: UIControl.State.normal)
         return dollar
     }()
@@ -66,6 +65,7 @@ class ViewController: UIViewController {
         let dollar = UIButton(type: .system)
         dollar.translatesAutoresizingMaskIntoConstraints = false
         dollar.setTitle("$$$$", for: UIControl.State.normal)
+        dollar.addLeftBorder()
         dollar.setTitleColor(UIColor.purple, for: UIControl.State.normal)
         return dollar
     }()
@@ -73,7 +73,7 @@ class ViewController: UIViewController {
 
     var buttonsAreHidden = true {
         didSet {
-            let animation = UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut) {
+            let animation = UIViewPropertyAnimator(duration: 0.3, curve: .easeOut) {
                self.stackView.isHidden = self.buttonsAreHidden
                 
                 //remove all existing constraints
@@ -82,13 +82,19 @@ class ViewController: UIViewController {
                 })
                 
                 let screenSize = UIScreen.main.bounds
+                var stackedButtons = self.stackView.arrangedSubviews
                 
                 if self.buttonsAreHidden {
+                    stackedButtons.forEach({ (button) in
+                        button.layer.sublayers?.first?.isHidden = true
+                    })
                     self.pinBackground(self.backgroundView, to: self.mainStackView, constant: 80 )
                 }else {
+                    stackedButtons.forEach({ (button) in
+                        button.layer.sublayers?.first?.isHidden = false
+                    })
                     self.pinBackground(self.backgroundView, to: self.mainStackView, constant: screenSize.size.width - 20 )
                 }
-                
                 self.view.layoutIfNeeded()
             }
             animation.startAnimation()
@@ -115,18 +121,16 @@ class ViewController: UIViewController {
     }()
    
     override func viewDidLoad() {
-        super.viewDidLoad()
+       super.viewDidLoad()
        self.view.backgroundColor = UIColor.white
         
        self.view.addSubview(mainStackView)
        
-        
         [button, stackView].forEach { (view) in
             self.mainStackView.addArrangedSubview(view)
         }
     
         NSLayoutConstraint.activate([
-            
             self.mainStackView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 100),
             self.mainStackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
             self.mainStackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),

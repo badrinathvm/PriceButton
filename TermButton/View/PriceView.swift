@@ -31,7 +31,7 @@ class PriceView:UIView {
         let dollar = UIButton(type: .system)
         dollar.translatesAutoresizingMaskIntoConstraints = false
         dollar.setTitle("$", for: UIControl.State.normal)
-        dollar.addBorder(side: .left, color: UIColor.lightGray, width: 1)
+        //dollar.addBorder(side: .left, color: UIColor.lightGray, width: 1)
         dollar.setTitleColor(UIColor.purple, for: UIControl.State.normal)
         return dollar
     }()
@@ -41,8 +41,8 @@ class PriceView:UIView {
         dollar.translatesAutoresizingMaskIntoConstraints = false
         dollar.setTitle("$$", for: UIControl.State.normal)
         dollar.setTitleColor(UIColor.purple, for: UIControl.State.normal)
-        dollar.addBorder(side: .left, color: UIColor.lightGray, width: 1)
-        dollar.addBorder(side: .right, color: UIColor.lightGray, width: 1)
+        //dollar.addBorder(side: .left, color: UIColor.lightGray, width: 1)
+        //dollar.addBorder(side: .right, color: UIColor.lightGray, width: 1)
         return dollar
     }()
     
@@ -50,7 +50,7 @@ class PriceView:UIView {
         let dollar = UIButton(type: .system)
         dollar.translatesAutoresizingMaskIntoConstraints = false
         dollar.setTitle("$$$", for: UIControl.State.normal)
-        dollar.addBorder(side: .right, color: UIColor.lightGray, width: 1)
+        //dollar.addBorder(side: .right, color: UIColor.lightGray, width: 1)
         dollar.setTitleColor(UIColor.purple, for: UIControl.State.normal)
         return dollar
     }()
