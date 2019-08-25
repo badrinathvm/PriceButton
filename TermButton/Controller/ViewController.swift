@@ -55,7 +55,7 @@ class ViewController: UIViewController {
     var widthConstant:CGFloat = 120 {
         didSet {
              self.mainStackWidthConstraint.constant = widthConstant
-             self.pinBackground(self.backgroundView, to: self.mainStackView, constant: widthConstant )
+             self.pinBackground(self.backgroundView, to: self.mainStackView)
         }
     }
     
@@ -86,7 +86,7 @@ class ViewController: UIViewController {
         buttonStackView.isHidden = true
         
         //set backgroundView to hold stackviews
-        pinBackground(backgroundView, to: mainStackView, constant: widthConstant)
+        pinBackground(backgroundView, to: mainStackView)
     }
     
     @objc func expandButton(_ sender: UIButton) {
@@ -127,10 +127,10 @@ extension ViewController {
         }
     }
     
-    private func pinBackground(_ view: UIView, to stackView: UIStackView , constant: CGFloat) {
+    private func pinBackground(_ view: UIView, to stackView: UIStackView) {
         view.translatesAutoresizingMaskIntoConstraints = false
         stackView.insertSubview(view, at: 0)
-        view.pin(to: stackView, constant: constant)
+        view.pin(to: stackView)
     }
 }
 
