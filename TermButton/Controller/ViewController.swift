@@ -143,7 +143,7 @@ extension ViewController {
         
         let animation = UIViewPropertyAnimator(duration: 0.3, curve: .easeOut) {
             
-            //update the stack view
+            //hide or show the stackview.
             self.stackView.isHidden = self.buttonsAreHidden
             
             /// change button image and update the width constraint
@@ -162,7 +162,6 @@ extension ViewController {
             
             self.view.layoutIfNeeded()
         }
-        
         animation.startAnimation()
     }
 }
