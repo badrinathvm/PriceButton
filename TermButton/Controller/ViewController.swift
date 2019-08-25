@@ -10,7 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var models = ["$", "$$", "$$$" , "$$$$"]
+    fileprivate let models = ["$", "$$", "$$$" , "$$$$"]
     
     private lazy var backgroundView: UIView = {
         let view = UIView()
@@ -20,16 +20,6 @@ class ViewController: UIViewController {
         return view
     }()
     
-    private lazy var stackView:UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.alignment = .fill
-        stackView.spacing = 2.0
-        stackView.distribution = .fillProportionally
-        return stackView
-    }()
-    
     private lazy var mainStackView:UIStackView =  {
         let mainStack = UIStackView()
         mainStack.axis = .horizontal
@@ -37,6 +27,16 @@ class ViewController: UIViewController {
         mainStack.distribution = .fillProportionally
         mainStack.translatesAutoresizingMaskIntoConstraints = false
         return mainStack
+    }()
+    
+    private lazy var buttonStackView:UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
+        stackView.spacing = 2.0
+        stackView.distribution = .fillProportionally
+        return stackView
     }()
     
     public lazy var button: UIButton = {
@@ -83,7 +83,7 @@ class ViewController: UIViewController {
         configureButtonsStack()
         
         //hide the stack view initially
-        stackView.isHidden = true
+        buttonStackView.isHidden = true
         
         //set backgroundView to hold stackviews
         pinBackground(backgroundView, to: mainStackView, constant: widthConstant)
@@ -91,12 +91,6 @@ class ViewController: UIViewController {
     
     @objc func expandButton(_ sender: UIButton) {
         buttonsAreHidden.toggle()
-    }
-    
-    private func pinBackground(_ view: UIView, to stackView: UIStackView , constant: CGFloat) {
-        view.translatesAutoresizingMaskIntoConstraints = false
-        stackView.insertSubview(view, at: 0)
-        view.pin(to: stackView, constant: constant)
     }
 }
 
@@ -106,7 +100,7 @@ extension ViewController {
     private func configureMainStackView() {
         self.view.addSubview(mainStackView)
         
-        [button, stackView].forEach { (view) in
+        [button, buttonStackView].forEach { (view) in
             self.mainStackView.addArrangedSubview(view)
         }
         
@@ -129,8 +123,14 @@ extension ViewController {
             dollar.setTitle(value, for: UIControl.State.normal)
             dollar.addLeftBorder()
             dollar.setTitleColor(UIColor.purple, for: UIControl.State.normal)
-            stackView.addArrangedSubview(dollar)
+            buttonStackView.addArrangedSubview(dollar)
         }
+    }
+    
+    private func pinBackground(_ view: UIView, to stackView: UIStackView , constant: CGFloat) {
+        view.translatesAutoresizingMaskIntoConstraints = false
+        stackView.insertSubview(view, at: 0)
+        view.pin(to: stackView, constant: constant)
     }
 }
 
@@ -140,12 +140,12 @@ extension ViewController {
     fileprivate func performAnimation() {
         let screenSize = UIScreen.main.bounds
         
-        let stackedButtons = self.stackView.arrangedSubviews
+        let stackedButtons = self.buttonStackView.arrangedSubviews
         
         let animation = UIViewPropertyAnimator(duration: 0.3, curve: .easeOut) {
             
             //hide or show the stackview.
-            self.stackView.isHidden = self.buttonsAreHidden
+            self.buttonStackView.isHidden = self.buttonsAreHidden
             
             /// change button image and update the width constraint
             self.updateButtonImage = !self.buttonsAreHidden
