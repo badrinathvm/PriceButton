@@ -30,7 +30,7 @@ class ViewController: UIViewController {
         return stackView
     }()
     
-    let mainStackView:UIStackView =  {
+    private lazy var mainStackView:UIStackView =  {
         let mainStack = UIStackView()
         mainStack.axis = .horizontal
         mainStack.alignment = .fill
@@ -56,40 +56,7 @@ class ViewController: UIViewController {
     
     var buttonsAreHidden = true {
         didSet {
-            let animation = UIViewPropertyAnimator(duration: 0.3, curve: .easeOut) {
-               self.stackView.isHidden = self.buttonsAreHidden
-                
-                //remove all existing constraints
-                self.backgroundView.constraints.forEach({ (constraint) in
-                    constraint.isActive = false
-                })
-                
-                let screenSize = UIScreen.main.bounds
-                let stackedButtons = self.stackView.arrangedSubviews
-                
-                if self.buttonsAreHidden {
-                    /// hide the border lines when animating
-                    stackedButtons.forEach({ (button) in
-                        button.layer.sublayers?.first?.isHidden = true
-                    })
-                    
-                    /// change the button image and update the width constraint
-                    self.button.setImage(UIImage(named: "dots_unfilled"), for: UIControl.State.normal)
-                    self.mainStackWidthConstraint.constant = self.widthConstant
-                    self.pinBackground(self.backgroundView, to: self.mainStackView, constant: self.widthConstant )
-                }else {
-                    /// show border lines when animating
-                    stackedButtons.forEach({ (button) in
-                        button.layer.sublayers?.first?.isHidden = false
-                    })
-                    self.button.setImage(UIImage(named: "dots_filled"), for: UIControl.State.normal)
-                    self.mainStackWidthConstraint.constant = screenSize.size.width - 20
-                    self.pinBackground(self.backgroundView, to: self.mainStackView, constant: screenSize.size.width - 20 )
-                }
-                self.view.layoutIfNeeded()
-            }
-            
-            animation.startAnimation()
+            performAnimation()
         }
     }
 
@@ -120,6 +87,10 @@ class ViewController: UIViewController {
         stackView.insertSubview(view, at: 0)
         view.pin(to: stackView, constant: constant)
     }
+}
+
+// MARK: stack views configuration
+extension ViewController {
     
     private func configureMainStackView() {
         self.view.addSubview(mainStackView)
@@ -136,7 +107,7 @@ class ViewController: UIViewController {
             mainStackWidthConstraint,
             self.mainStackView.heightAnchor.constraint(equalToConstant: 40),
             self.button.topAnchor.constraint(equalTo: self.mainStackView.topAnchor),
-        ])
+            ])
     }
     
     private func configureButtonsStack() {
@@ -148,5 +119,49 @@ class ViewController: UIViewController {
             dollar.setTitleColor(UIColor.purple, for: UIControl.State.normal)
             stackView.addArrangedSubview(dollar)
         }
+    }
+}
+
+// MARK : animation
+extension ViewController {
+    
+    fileprivate func performAnimation() {
+        let screenSize = UIScreen.main.bounds
+        
+        let stackedButtons = self.stackView.arrangedSubviews
+        
+        let animation = UIViewPropertyAnimator(duration: 0.3, curve: .easeOut) {
+            self.stackView.isHidden = self.buttonsAreHidden
+            
+            //remove all existing constraints
+            self.backgroundView.constraints.forEach({ (constraint) in
+                constraint.isActive = false
+            })
+           
+            if self.buttonsAreHidden {
+                /// hide the border lines when animating
+                stackedButtons.forEach({ (button) in
+                    button.layer.sublayers?.first?.isHidden = true
+                })
+                
+                /// change the button image and update the width constraint
+                self.button.setImage(UIImage(named: "dots_unfilled"), for: UIControl.State.normal)
+                self.mainStackWidthConstraint.constant = self.widthConstant
+                self.pinBackground(self.backgroundView, to: self.mainStackView, constant: self.widthConstant )
+            }else {
+                /// show border lines when animating
+                stackedButtons.forEach({ (button) in
+                    button.layer.sublayers?.first?.isHidden = false
+                })
+                
+                /// change the button image and update the width constraint
+                self.button.setImage(UIImage(named: "dots_filled"), for: UIControl.State.normal)
+                self.mainStackWidthConstraint.constant = screenSize.size.width - 20
+                self.pinBackground(self.backgroundView, to: self.mainStackView, constant: screenSize.size.width - 20 )
+            }
+            self.view.layoutIfNeeded()
+        }
+        
+        animation.startAnimation()
     }
 }
