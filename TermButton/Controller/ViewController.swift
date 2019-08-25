@@ -112,6 +112,7 @@ extension ViewController {
         
         /// set constraints
         mainStackWidthConstraint = self.mainStackView.widthAnchor.constraint(equalToConstant: widthConstant)
+        
         NSLayoutConstraint.activate([
             self.mainStackView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 100),
             self.mainStackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
@@ -148,7 +149,7 @@ extension ViewController {
             
             /// change button image and update the width constraint
             self.updateButtonImage = !self.buttonsAreHidden
-            self.widthConstant = self.buttonsAreHidden ? 120 : screenSize.size.width - 20
+            self.widthConstant = self.buttonsAreHidden ?  self.button.frame.width : screenSize.size.width - 20
             
             //handle left borders while animating.
             stackedButtons.forEach({ (button) in
