@@ -10,7 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    fileprivate let models = ["$", "$$", "$$$" , "$$$$"]
+    private let models = ["$", "$$", "$$$" , "$$$$"]
     
     private lazy var backgroundView: UIView = {
         let view = UIView()
@@ -52,20 +52,20 @@ class ViewController: UIViewController {
     
     var mainStackWidthConstraint:NSLayoutConstraint!
     
-    var widthConstant:CGFloat = 120 {
+    private var widthConstant:CGFloat = 120 {
         didSet {
              self.mainStackWidthConstraint.constant = widthConstant
              self.pinBackground(self.backgroundView, to: self.mainStackView)
         }
     }
     
-    var buttonsAreHidden = true {
+    private var buttonsAreHidden = true {
         didSet {
             performAnimation()
         }
     }
     
-    var updateButtonImage = false {
+    private var updateButtonImage = false {
         didSet {
             self.priceButton.setImage(UIImage(named: updateButtonImage ? "dots_filled" : "dots_unfilled"), for: UIControl.State.normal)
         }
