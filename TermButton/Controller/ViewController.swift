@@ -10,7 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    private let models = ["$", "$$", "$$$" , "$$$$"]
+    private let buttonTitles = ["$", "$$", "$$$" , "$$$$"]
     
     private lazy var backgroundView: UIView = {
         let view = UIView()
@@ -116,7 +116,7 @@ extension ViewController {
     }
     
     private func configureButtonsStack() {
-        models.forEach { value in
+        buttonTitles.forEach { value in
             let dollar = UIButton(type: .system)
             dollar.setTitle(value, for: UIControl.State.normal)
             dollar.addLeftBorder()
