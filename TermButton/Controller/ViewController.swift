@@ -116,10 +116,12 @@ extension ViewController {
     }
     
     private func configureButtonsStack() {
-        buttonTitles.forEach { value in
+        buttonTitles.enumerated().forEach { index, value in
             let dollar = UIButton(type: .system)
             dollar.setTitle(value, for: UIControl.State.normal)
             dollar.addLeftBorder()
+            dollar.tag = index
+            dollar.addTarget(self, action: #selector(didTapOnDollar(_ :)), for: UIControl.Event.touchUpInside)
             dollar.setTitleColor(UIColor.purple, for: UIControl.State.normal)
             buttonStackView.addArrangedSubview(dollar)
         }
@@ -129,6 +131,10 @@ extension ViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         stackView.insertSubview(view, at: 0)
         view.pin(to: stackView)
+    }
+    
+    @objc func didTapOnDollar(_ sender: UIButton) {
+        print(sender.tag)
     }
 }
 
