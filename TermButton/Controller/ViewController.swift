@@ -39,7 +39,7 @@ class ViewController: UIViewController {
         return stackView
     }()
     
-    public lazy var button: UIButton = {
+    public lazy var priceButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(named: "dots_unfilled"), for: UIControl.State.normal)
         button.semanticContentAttribute = .forceRightToLeft
@@ -67,7 +67,7 @@ class ViewController: UIViewController {
     
     var updateButtonImage = false {
         didSet {
-            self.button.setImage(UIImage(named: updateButtonImage ? "dots_filled" : "dots_unfilled"), for: UIControl.State.normal)
+            self.priceButton.setImage(UIImage(named: updateButtonImage ? "dots_filled" : "dots_unfilled"), for: UIControl.State.normal)
         }
     }
 
@@ -100,7 +100,7 @@ extension ViewController {
     private func configureMainStackView() {
         self.view.addSubview(mainStackView)
         
-        [button, buttonStackView].forEach { (view) in
+        [priceButton, buttonStackView].forEach { (view) in
             self.mainStackView.addArrangedSubview(view)
         }
         
@@ -112,14 +112,13 @@ extension ViewController {
             self.mainStackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
             mainStackWidthConstraint,
             self.mainStackView.heightAnchor.constraint(equalToConstant: 40),
-            self.button.topAnchor.constraint(equalTo: self.mainStackView.topAnchor),
+            self.priceButton.topAnchor.constraint(equalTo: self.mainStackView.topAnchor),
         ])
     }
     
     private func configureButtonsStack() {
         models.forEach { value in
             let dollar = UIButton(type: .system)
-            dollar.translatesAutoresizingMaskIntoConstraints = false
             dollar.setTitle(value, for: UIControl.State.normal)
             dollar.addLeftBorder()
             dollar.setTitleColor(UIColor.purple, for: UIControl.State.normal)
@@ -149,7 +148,7 @@ extension ViewController {
             
             /// change button image and update the width constraint
             self.updateButtonImage = !self.buttonsAreHidden
-            self.widthConstant = self.buttonsAreHidden ?  self.button.frame.width : screenSize.size.width - 20
+            self.widthConstant = self.buttonsAreHidden ?  self.priceButton.frame.width : screenSize.size.width - 20
             
             //handle left borders while animating.
             stackedButtons.forEach({ (button) in
