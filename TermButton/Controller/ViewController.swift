@@ -111,8 +111,7 @@ extension ViewController {
             self.mainStackView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 100),
             self.mainStackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
             mainStackWidthConstraint,
-            self.mainStackView.heightAnchor.constraint(equalToConstant: 40),
-            self.priceButton.topAnchor.constraint(equalTo: self.mainStackView.topAnchor),
+            self.mainStackView.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
     
